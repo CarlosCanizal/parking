@@ -54,6 +54,14 @@ angular.module('Parking', [
         }
       }
     })
+    .state('app.parking', {
+      url: '/parking',
+      views: {
+        'menuContent' :{
+          templateUrl: 'templates/parking.html'
+        }
+      }
+    })
     .state('app.vehicles', {
       url: '/vehicles',
       views: {
