@@ -1,9 +1,14 @@
 'use strict';
 angular.module('Parking.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Parse) {
+
+  //Initialize Parse
+  Parse.initialize();
+
+  //jccz revisar si es un bung loginDati
   // Form data for the login modal
-  $scope.loginData = {};
+  $scope.loginDati = {};
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -31,19 +36,24 @@ angular.module('Parking.controllers', [])
     $timeout(function() {
       $scope.closeLogin();
     }, 1000);
-  }
+  };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
+.controller('VehiclesCtrl', function($scope, Parse, VehicleParser) {
+  Parse.getVehicles().then(function(vehicles){
+    $scope.vehicles = vehicles;
+  },function(error){
+    console.log(error.message);
+  });
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('VehicleCtrl', function($scope, $stateParams, Parse, VehicleParser) {
+
+  var id = $stateParams.vehicleId;
+  Parse.getVehicle(id).then(function(vehicle){
+    $scope.vehicle = vehicle;
+  },function(error){
+    console.log(error.message);
+  });
+
 });

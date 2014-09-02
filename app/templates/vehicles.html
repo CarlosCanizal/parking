@@ -4,8 +4,10 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item class="item-icon-right" ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
-        {{playlist.title}}
+      <ion-item class="item item-avatar item-icon-right" ng-repeat="vehicle in vehicles" href="#/app/vehicles/{{vehicle.id}}">
+        <img src="{{vehicle.image._url}}">
+        <h2>{{vehicle.name}}</h2>
+        <p>{{vehicle.plate}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
     </ion-list>

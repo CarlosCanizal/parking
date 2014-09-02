@@ -6,7 +6,12 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('Parking', ['ionic', 'config', 'Parking.controllers'])
+angular.module('Parking', [
+  'ionic',
+  'config',
+  'Parking.controllers',
+  'Parking.services'
+])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -54,7 +59,7 @@ angular.module('Parking', ['ionic', 'config', 'Parking.controllers'])
       views: {
         'menuContent' :{
           templateUrl: 'templates/vehicles.html',
-          controller: 'PlaylistsCtrl'
+          controller: 'VehiclesCtrl'
         }
       }
     })
@@ -63,21 +68,23 @@ angular.module('Parking', ['ionic', 'config', 'Parking.controllers'])
       views: {
         'menuContent' :{
           templateUrl: 'templates/snaps.html',
-          controller: 'PlaylistsCtrl'
+          controller: 'VehiclesCtrl'
         }
       }
     })
 
-    .state('app.single', {
-      url: '/playlists/:playlistId',
+    .state('app.vehicle', {
+      url: '/vehicles/:vehicleId',
       views: {
         'menuContent' :{
-          templateUrl: 'templates/playlist.html',
-          controller: 'PlaylistCtrl'
+          templateUrl: 'templates/vehicle.html',
+          controller: 'VehicleCtrl'
         }
       }
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/vehicles');
 });
+
+angular.module('Parking.services',[]);
 
