@@ -6,3 +6,36 @@
   width: 96px;
   height: 96px;
 }
+
+/*jccanizal styles*/
+
+.align-center{
+  text-align: center;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+
+.box-icon{
+  outline: solid 1px #000;
+  text-align: center;
+  line-height: 5rem;
+  font-size: 3rem;
+}
+
+.float-left{
+  float: left;
+}
+
+
+/*jccanizal styles*/
+
+
