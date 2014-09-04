@@ -26,6 +26,9 @@ angular.module('Parking.services')
 
       return deferred.promise;
     },
+    deleteVehicle: function(vehicle){
+      return vehicle.destroy();
+    },
     getVehicle: function(vehicleId){
       var deferred = $q.defer();
       var Vehicle = Parse.Object.extend('Vehicle');

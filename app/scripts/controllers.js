@@ -63,14 +63,24 @@ angular.module('Parking.controllers', [])
   };
 
   $scope.addVehicle = function(){
-
     Parse.saveVehicle($scope.vehicle).then(function(vehicle){
       $scope.vehicles.push(vehicle);
       $scope.closeVehicle();
     },function(error){
       console.log(error);
     });
+  };
 
+  $scope.deleteVehicle = function(vehicle){
+    
+    Parse.deleteVehicle(vehicle).then(function(){
+      var index = $scope.vehicles.indexOf(vehicle);
+      console.log(index);
+      $scope.vehicles.splice(index,1);
+      $scope.$apply();
+    },function(error){
+      console.log(error.message);
+    });
   };
 
   Parse.getVehicles().then(function(vehicles){
