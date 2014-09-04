@@ -8,7 +8,7 @@ angular.module('Parking.controllers', [])
 
   //jccz revisar si es un bung loginDati
   // Form data for the login modal
-  $scope.loginDati = {};
+  $scope.loginData = {};
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -23,7 +23,7 @@ angular.module('Parking.controllers', [])
   },
 
   // Open the login modal
-  $scope.login = function() {
+  $scope.openLogin = function() {
     $scope.modal.show();
   };
 
@@ -39,19 +39,70 @@ angular.module('Parking.controllers', [])
   };
 })
 
-.controller('VehiclesCtrl', function($scope, Parse, VehicleParser) {
+.controller('VehiclesCtrl', function($scope,$ionicModal, Parse, VehicleParser) {
+
+  $ionicModal.fromTemplateUrl('templates/addVehicle.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.vehicle = {};
+
+  $scope.openVehicle = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.closeVehicle = function() {
+    $scope.modal.hide();
+  };
+
+  // Open the login modal
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+
+  $scope.addVehicle = function(){
+    Parse.saveVehicle($scope.vehicle).then(function(vehicle){
+      $scope.vehicles.push(vehicle);
+      $scope.closeVehicle();
+    },function(error){
+      console.log(error);
+    });
+  };
+
+  $scope.deleteVehicle = function(vehicle){
+    
+    Parse.deleteVehicle(vehicle).then(function(){
+      var index = $scope.vehicles.indexOf(vehicle);
+      console.log(index);
+      $scope.vehicles.splice(index,1);
+      $scope.$apply();
+    },function(error){
+      console.log(error.message);
+    });
+  };
+
   Parse.getVehicles().then(function(vehicles){
     $scope.vehicles = vehicles;
   },function(error){
     console.log(error.message);
   });
 })
-
 .controller('VehicleCtrl', function($scope, $stateParams, Parse, VehicleParser) {
 
   var id = $stateParams.vehicleId;
   Parse.getVehicle(id).then(function(vehicle){
     $scope.vehicle = vehicle;
+  },function(error){
+    console.log(error.message);
+  });
+
+})
+.controller('ParkingCtrl', function($scope, $stateParams, Parse, VehicleParser,$ionicScrollDelegate) {
+
+  Parse.getVehicles().then(function(vehicles){
+    $scope.vehicles = vehicles;
   },function(error){
     console.log(error.message);
   });
