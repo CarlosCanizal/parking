@@ -23,7 +23,7 @@ angular.module('Parking.controllers', [])
   },
 
   // Open the login modal
-  $scope.login = function() {
+  $scope.openLogin = function() {
     $scope.modal.show();
   };
 
@@ -39,7 +39,27 @@ angular.module('Parking.controllers', [])
   };
 })
 
-.controller('VehiclesCtrl', function($scope, Parse, VehicleParser) {
+.controller('VehiclesCtrl', function($scope,$ionicModal, Parse, VehicleParser) {
+
+  $ionicModal.fromTemplateUrl('templates/addVehicle.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.openVehicle = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.closeVehicle = function() {
+    $scope.modal.hide();
+  };
+
+  // Open the login modal
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+
   Parse.getVehicles().then(function(vehicles){
     $scope.vehicles = vehicles;
   },function(error){
