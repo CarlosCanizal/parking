@@ -10,7 +10,8 @@ angular.module('Parking', [
   'ionic',
   'config',
   'Parking.controllers',
-  'Parking.services'
+  'Parking.services',
+  'Parking.directives'
 ])
 
 .run(function($ionicPlatform) {
@@ -58,7 +59,8 @@ angular.module('Parking', [
       url: '/parking',
       views: {
         'menuContent' :{
-          templateUrl: 'templates/parking.html'
+          templateUrl: 'templates/parking.html',
+          controller: 'ParkingCtrl'
         }
       }
     })
@@ -95,4 +97,5 @@ angular.module('Parking', [
 });
 
 angular.module('Parking.services',[]);
+angular.module('Parking.directives',[]);
 

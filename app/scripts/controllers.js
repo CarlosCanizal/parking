@@ -46,12 +46,20 @@ angular.module('Parking.controllers', [])
     console.log(error.message);
   });
 })
-
 .controller('VehicleCtrl', function($scope, $stateParams, Parse, VehicleParser) {
 
   var id = $stateParams.vehicleId;
   Parse.getVehicle(id).then(function(vehicle){
     $scope.vehicle = vehicle;
+  },function(error){
+    console.log(error.message);
+  });
+
+})
+.controller('ParkingCtrl', function($scope, $stateParams, Parse, VehicleParser,$ionicScrollDelegate) {
+
+  Parse.getVehicles().then(function(vehicles){
+    $scope.vehicles = vehicles;
   },function(error){
     console.log(error.message);
   });
