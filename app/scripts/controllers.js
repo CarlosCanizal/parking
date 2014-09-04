@@ -66,10 +66,11 @@ angular.module('Parking.controllers', [])
 
     Parse.saveVehicle($scope.vehicle).then(function(vehicle){
       $scope.vehicles.push(vehicle);
+      $scope.closeVehicle();
     },function(error){
       console.log(error);
     });
-    
+
   };
 
   Parse.getVehicles().then(function(vehicles){
