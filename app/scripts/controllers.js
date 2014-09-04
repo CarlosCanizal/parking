@@ -8,7 +8,7 @@ angular.module('Parking.controllers', [])
 
   //jccz revisar si es un bung loginDati
   // Form data for the login modal
-  $scope.loginDati = {};
+  $scope.loginData = {};
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -47,6 +47,8 @@ angular.module('Parking.controllers', [])
     $scope.modal = modal;
   });
 
+  $scope.vehicle = {};
+
   $scope.openVehicle = function() {
     $scope.modal.hide();
   };
@@ -58,6 +60,16 @@ angular.module('Parking.controllers', [])
   // Open the login modal
   $scope.openModal = function() {
     $scope.modal.show();
+  };
+
+  $scope.addVehicle = function(){
+
+    Parse.saveVehicle($scope.vehicle).then(function(vehicle){
+      $scope.vehicles.push(vehicle);
+    },function(error){
+      console.log(error);
+    });
+    
   };
 
   Parse.getVehicles().then(function(vehicles){
