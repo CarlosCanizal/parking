@@ -17,6 +17,14 @@ angular.module('Parking.controllers', [])
     $scope.modal = modal;
   });
 
+
+  $ionicModal.fromTemplateUrl('templates/addVehicle.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modalVehicle = modal;
+  });
+
+
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
     $scope.modal.hide();
@@ -26,6 +34,16 @@ angular.module('Parking.controllers', [])
   $scope.openLogin = function() {
     $scope.modal.show();
   };
+
+  $scope.openVehicle = function() {
+    $scope.modalVehicle.show();
+  };
+
+  $scope.closeVehicle = function() {
+    $scope.modalVehicle.hide();
+  };
+
+  
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
@@ -41,26 +59,10 @@ angular.module('Parking.controllers', [])
 
 .controller('VehiclesCtrl', function($scope,$ionicModal, Parse, VehicleParser) {
 
-  $ionicModal.fromTemplateUrl('templates/addVehicle.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
   $scope.vehicle = {};
 
-  $scope.openVehicle = function() {
-    $scope.modal.hide();
-  };
-
-  $scope.closeVehicle = function() {
-    $scope.modal.hide();
-  };
-
-  // Open the login modal
-  $scope.openModal = function() {
-    $scope.modal.show();
-  };
+  
+  
 
   $scope.addVehicle = function(){
     Parse.saveVehicle($scope.vehicle).then(function(vehicle){
