@@ -94,17 +94,20 @@ angular.module('Parking.controllers', [])
 .controller('ParkingCtrl', function($scope, $stateParams, Parse, VehicleParser,$ionicScrollDelegate) {
 
   $scope.time = 60;
+  $scope.rate = 3.00;
+  $scope.payment = (($scope.time/60)*$scope.rate).toFixed(2);
+
 
   $scope.plus = function(){
     $scope.time += 15;
+    $scope.payment = (($scope.time/60)*$scope.rate).toFixed(2);
   };
 
   $scope.minus = function(){
     var time = $scope.time - 15;
     $scope.time = time > 0 ? time : $scope.time;
+    $scope.payment = (($scope.time/60)*$scope.rate).toFixed(2);
   };
-
-
 
   Parse.getVehicles().then(function(vehicles){
     $scope.vehicles = vehicles;

@@ -3,7 +3,7 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-    <h1 class='align-center'>$3.00 / hr</h1>
+    <h1 class='align-center'>${{rate.toFixed(2)}} / hr</h1>
 
     <div class='row'>
       <div class='col col-25 box-icon' ng-click="minus()">
@@ -37,7 +37,7 @@
       </div>
     </ion-scroll>
     <button class="button button-block button-positive">
-      PAY
+      PAY {{payment}} USD
     </button>
 
 
