@@ -18,13 +18,6 @@ angular.module('Parking.controllers', [])
   });
 
 
-  $ionicModal.fromTemplateUrl('templates/addVehicle.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modalVehicle = modal;
-  });
-
-
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
     $scope.modal.hide();
@@ -42,7 +35,6 @@ angular.module('Parking.controllers', [])
   $scope.closeVehicle = function() {
     $scope.modalVehicle.hide();
   };
-
   
 
   // Perform the login action when the user submits the login form
@@ -56,11 +48,33 @@ angular.module('Parking.controllers', [])
     }, 1000);
   };
 })
-
 .controller('VehiclesCtrl', function($scope,$ionicModal, Parse, VehicleParser) {
 
   $scope.vehicle = {};
   $scope.vehicles = [];
+
+  $ionicModal.fromTemplateUrl('templates/addVehicle.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modalVehicle = modal;
+  });
+
+  $scope.addVehicle = function(){
+    Parse.saveVehicle($scope.vehicle).then(function(vehicle){
+      $scope.vehicles.push(vehicle);
+      $scope.closeVehicle();
+    },function(error){
+      console.log(error);
+    });
+  };
+
+  $scope.openVehicle = function() {
+    $scope.modalVehicle.show();
+  };
+
+  $scope.closeVehicle = function() {
+    $scope.modalVehicle.hide();
+  };
   
 
   $scope.deleteVehicle = function(vehicle){
@@ -91,28 +105,66 @@ angular.module('Parking.controllers', [])
   });
 
 })
-.controller('ParkingCtrl', function($scope, $stateParams, Parse, VehicleParser,$ionicScrollDelegate) {
+.controller('ParkingCtrl', function($scope, $ionicModal, Parse, VehicleParser) {
 
-  $scope.time = 60;
+  $scope.checkin = {};
+  $scope.checkin.time = 60;
   $scope.rate = 3.00;
-  $scope.payment = (($scope.time/60)*$scope.rate).toFixed(2);
+  $scope.payment = (($scope.checkin.time/60)*$scope.rate).toFixed(2);
+  $scope.vehicle = {};
+  $scope.vehicles = [];
 
 
   $scope.plus = function(){
-    $scope.time += 15;
-    $scope.payment = (($scope.time/60)*$scope.rate).toFixed(2);
+    $scope.checkin.time += 15;
+    $scope.payment = (($scope.checkin.time/60)*$scope.rate).toFixed(2);
   };
 
   $scope.minus = function(){
-    var time = $scope.time - 15;
-    $scope.time = time > 0 ? time : $scope.time;
-    $scope.payment = (($scope.time/60)*$scope.rate).toFixed(2);
+    var time = $scope.checkin.time - 15;
+    $scope.checkin.time = time > 0 ? time : $scope.checkin.time;
+    $scope.payment = (($scope.checkin.time/60)*$scope.rate).toFixed(2);
+  };
+
+  $scope.selectVehicle = function(vehicle,$event){
+    $scope.checkin.plate = vehicle.plate;
+    angular.element(document.querySelectorAll('.selected')).removeClass('selected');
+    angular.element($event.currentTarget).addClass('selected');
   };
 
   Parse.getVehicles().then(function(vehicles){
     $scope.vehicles = vehicles;
+    $scope.checkin.plate = vehicles[0].plate;
   },function(error){
     console.log(error.message);
   });
+
+
+  $ionicModal.fromTemplateUrl('templates/addVehicle.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modalVehicle = modal;
+  });
+
+  $scope.newCheckin = function(){
+    console.log($scope.checkin);
+  };
+
+  $scope.addVehicle = function(){
+    Parse.saveVehicle($scope.vehicle).then(function(vehicle){
+      $scope.vehicles.push(vehicle);
+      $scope.closeVehicle();
+    },function(error){
+      console.log(error);
+    });
+  };
+
+  $scope.openVehicle = function() {
+    $scope.modalVehicle.show();
+  };
+
+  $scope.closeVehicle = function() {
+    $scope.modalVehicle.hide();
+  };
 
 });

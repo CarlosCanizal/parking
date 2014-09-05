@@ -10,7 +10,7 @@
         <i class="icon ion-minus-round"></i>
       </div>
       <div class='col col-50 box-icon'>
-        {{time}} min.
+        {{checkin.time}} min.
       </div>
       <div class='col col-25 box-icon' ng-click="plus()">
         <i class="icon ion-plus-round"></i>        
@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col col-90" ng-repeat="vehicle in vehicles">
           <div class="card">
-            <div class="item item-avatar">
+            <div class="item item-avatar" ng-class="{'selected': $index == 0}" ng-click="selectVehicle(vehicle, $event)">
               <img ng-src="{{vehicle.image._url}}">
               <h2>{{vehicle.name}}</h2>
               <p>{{vehicle.plate}}</p>
@@ -36,7 +36,11 @@
         </div>
       </div>
     </ion-scroll>
-    <button class="button button-block button-positive">
+    <form >
+      <input type="hidden" ng-model="checkin.plate" />
+      <input type="hidden" ng-model="checkin.time" />
+    </form>
+    <button class="button button-block button-positive" ng-click="newCheckin()">
       PAY {{payment}} USD
     </button>
 
