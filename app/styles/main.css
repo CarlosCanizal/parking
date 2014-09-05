@@ -35,6 +35,15 @@
   float: left;
 }
 
+.item.activated{
+  background-color: #1aacc3;
+}
+
+.item.selected, .item.selected *{
+  background-color: #1aacc3;
+  color: #FFF;
+}
+
 
 /*jccanizal styles*/
 
