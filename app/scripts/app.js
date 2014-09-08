@@ -56,7 +56,7 @@ angular.module('Parking', [
       }
     })
     .state('app.parking', {
-      url: '/parking',
+      url: '/parking/:checkinId',
       views: {
         'menuContent' :{
           templateUrl: 'templates/parking.html',
