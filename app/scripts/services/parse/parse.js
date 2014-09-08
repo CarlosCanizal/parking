@@ -79,6 +79,9 @@ angular.module('Parking.services')
       });
 
       return deferred.promise;
+    },
+    deleteCheckin: function(checkin){
+      return checkin.destroy();
     }
 
   };

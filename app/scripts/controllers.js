@@ -81,7 +81,6 @@ angular.module('Parking.controllers', [])
     
     Parse.deleteVehicle(vehicle).then(function(){
       var index = $scope.vehicles.indexOf(vehicle);
-      console.log(index);
       $scope.vehicles.splice(index,1);
       $scope.$apply();
     },function(error){
@@ -112,6 +111,17 @@ angular.module('Parking.controllers', [])
   },function(error){
     console.log(error);
   });
+
+  $scope.deleteCheckin = function(checkin){
+
+    Parse.deleteCheckin(checkin).then(function(){
+      var index = $scope.checkins.indexOf(checkin);
+      $scope.checkins.splice(index,1);
+      $scope.$apply();
+    },function(error){
+      console.log(error.message);
+    });
+  };
 
 })
 .controller('ParkingCtrl', function($scope, $ionicModal, Parse, VehicleParser) {
