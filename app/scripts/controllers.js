@@ -134,9 +134,10 @@ angular.module('Parking.controllers', [])
   $scope.payment = (($scope.checkin.time/60)*$scope.rate).toFixed(2);
   $scope.vehicle = {};
   $scope.vehicles = [];
+  $scope.isNew = true;
 
   if(checkinId !== 'new'){
-    
+    $scope.isNew = false;
     Parse.getCheckin(checkinId).then(function(checkin){
         $scope.vehicle = checkin.vehicle;
         $scope.vehicles.push(checkin.vehicle);

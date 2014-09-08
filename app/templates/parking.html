@@ -3,7 +3,9 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons> -->
   <ion-content class="has-header">
-    <h1 class='align-center'>${{rate.toFixed(2)}} / hr</h1>
+    <h1 class='align-center'>
+      ${{rate.toFixed(2)}} / hr
+    </h1>
 
     <div class='row'>
       <div class='col col-25 box-icon' ng-click="minus()">
@@ -16,6 +18,7 @@
         <i class="icon ion-plus-round"></i>        
       </div>
     </div>
+    
     <ion-scroll direction="x" scrollbar-x="false" delegate-handle="mainScroll">
       <div class="row">
         <div class="col col-90" ng-repeat="vehicle in vehicles">
@@ -27,7 +30,7 @@
             </div>
           </div>
         </div>
-        <div class="col col-90" >
+        <div class="col col-90" ng-show="isNew">
           <div class="card" ng-click="openVehicle()">
             <div class="item item-avatar">
               Add Vehicle
