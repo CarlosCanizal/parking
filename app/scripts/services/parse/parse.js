@@ -53,7 +53,34 @@ angular.module('Parking.services')
       });
 
       return deferred.promise;
+    },
+    saveCheckin: function(newCheckin){
+      var deferred = $q.defer();
+      var Checkin = Parse.Object.extend('Checkin');
+      var checkin = new Checkin();
+
+      checkin.save(newCheckin).then(function(checkin){
+        deferred.resolve(checkin);
+      },function(error){
+        deferred.reject(error);
+      });
+
+      return deferred.promise;
+    },
+    getCheckins : function(){
+      var deferred = $q.defer();
+      var Checkin = Parse.Object.extend('Checkin');
+      var query = new Parse.Query(Checkin);
+
+      query.find().then(function(checkins){
+        deferred.resolve(checkins);
+      },function(error){
+        deferred.reject(error);
+      });
+
+      return deferred.promise;
     }
+
   };
   
 }]);
