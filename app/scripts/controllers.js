@@ -105,6 +105,10 @@ angular.module('Parking.controllers', [])
   });
 
 })
+.controller('CheckinCtrl', function($scope, Parse) {
+  
+
+})
 .controller('ParkingCtrl', function($scope, $ionicModal, Parse, VehicleParser) {
 
   $scope.checkin = {};
