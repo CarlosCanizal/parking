@@ -124,7 +124,9 @@ angular.module('Parking.controllers', [])
   };
 
 })
-.controller('ParkingCtrl', function($scope, $ionicModal, Parse, VehicleParser) {
+.controller('ParkingCtrl', function($scope, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
+
+  var checkinId = $stateParams.checkinId;
 
   $scope.checkin = {};
   $scope.checkin.time = 60;
@@ -132,6 +134,28 @@ angular.module('Parking.controllers', [])
   $scope.payment = (($scope.checkin.time/60)*$scope.rate).toFixed(2);
   $scope.vehicle = {};
   $scope.vehicles = [];
+
+  if(checkinId !== 'new'){
+    
+    Parse.getCheckin(checkinId).then(function(checkin){
+        $scope.vehicle = checkin.vehicle;
+        $scope.vehicles.push(checkin.vehicle);
+      },function(error){
+        console.log(error);
+    });
+
+  }else{
+
+    Parse.getVehicles().then(function(vehicles){
+      $scope.vehicles = vehicles;
+      $scope.checkin.vehicle= vehicles[0];
+    },function(error){
+      console.log(error.message);
+    });
+
+  }
+
+
 
 
   $scope.plus = function(){
@@ -146,17 +170,12 @@ angular.module('Parking.controllers', [])
   };
 
   $scope.selectVehicle = function(vehicle,$event){
-    $scope.checkin.plate = vehicle.plate;
+    $scope.checkin.vehicle = vehicle;
     angular.element(document.querySelectorAll('.selected')).removeClass('selected');
     angular.element($event.currentTarget).addClass('selected');
   };
 
-  Parse.getVehicles().then(function(vehicles){
-    $scope.vehicles = vehicles;
-    $scope.checkin.plate = vehicles[0].plate;
-  },function(error){
-    console.log(error.message);
-  });
+  
 
 
   $ionicModal.fromTemplateUrl('templates/addVehicle.html', {
@@ -166,6 +185,7 @@ angular.module('Parking.controllers', [])
   });
 
   $scope.newCheckin = function(){
+    $scope.checkin.vehicle = $scope.checkin.vehicle.toJSON();
     Parse.saveCheckin($scope.checkin).then(function(checkin){
       console.log(checkin);
     },function(error){

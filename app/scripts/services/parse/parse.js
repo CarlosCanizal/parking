@@ -82,6 +82,19 @@ angular.module('Parking.services')
     },
     deleteCheckin: function(checkin){
       return checkin.destroy();
+    },
+    getCheckin: function(checkinId){
+      var deferred = $q.defer();
+      var Checkin = Parse.Object.extend('Checkin');
+      var query = new Parse.Query(Checkin);
+
+      query.get(checkinId).then(function(checkin){
+        deferred.resolve(checkin);
+      },function(error){
+        deferred.reject(error);
+      });
+
+      return deferred.promise;
     }
 
   };

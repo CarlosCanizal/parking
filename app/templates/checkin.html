@@ -4,17 +4,17 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item class="item item-avatar item-icon-right" ng-repeat="checkin in checkins" ui-sref="app.parking" >
-        <h2>{{checkin.plate}}</h2>
+      <ion-item class="item item-avatar item-icon-right" ng-repeat="checkin in checkins" ui-sref="app.parking({checkinId:checkin.id})" >
+        <h2>{{checkin.vehicle.plate}}</h2>
         <i class="icon ion-chevron-right icon-accessory"></i>
         <ion-option-button class="button-assertive" ng-click="deleteCheckin(checkin)">
         Delete
         </ion-option-button>
       </ion-item>
     </ion-list>
-    <button class="button button-block button-positive" ng-click="openVehicle()">
+    <a class="button button-block button-positive" ui-sref="app.parking({checkinId:'new'})">
       Checkin
-    </button>
+    </a>
 
   </ion-content>
 </ion-view>

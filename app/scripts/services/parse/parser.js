@@ -45,11 +45,11 @@ factory('CheckinParser', function() {
   );
 
   //plate property
-  Checkin.prototype.__defineGetter__("plate", function() {
-    return this.get("plate");
+  Checkin.prototype.__defineGetter__("vehicle", function() {
+    return this.get("vehicle");
   });
-  Checkin.prototype.__defineSetter__("plate", function(aValue) {
-    return this.set("plate", aValue);
+  Checkin.prototype.__defineSetter__("vehicle", function(aValue) {
+    return this.set("vehicle", aValue);
   });
 
   // time property
