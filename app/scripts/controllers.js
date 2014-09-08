@@ -105,6 +105,15 @@ angular.module('Parking.controllers', [])
   });
 
 })
+.controller('CheckinCtrl', function($scope, Parse, CheckinParser) {
+  
+  Parse.getCheckins().then(function(checkins){
+    $scope.checkins = checkins;
+  },function(error){
+    console.log(error);
+  });
+
+})
 .controller('ParkingCtrl', function($scope, $ionicModal, Parse, VehicleParser) {
 
   $scope.checkin = {};
@@ -147,7 +156,11 @@ angular.module('Parking.controllers', [])
   });
 
   $scope.newCheckin = function(){
-    console.log($scope.checkin);
+    Parse.saveCheckin($scope.checkin).then(function(checkin){
+      console.log(checkin);
+    },function(error){
+      console.log(error);
+    });
   };
 
   $scope.addVehicle = function(){

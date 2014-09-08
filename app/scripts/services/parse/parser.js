@@ -34,4 +34,32 @@ factory('VehicleParser', function() {
 
   return Vehicle;
 
+}).
+factory('CheckinParser', function() {
+
+  var Checkin = Parse.Object.extend("Checkin", {
+      // Instance methods
+    }, {
+      // Class methods
+    }
+  );
+
+  //plate property
+  Checkin.prototype.__defineGetter__("plate", function() {
+    return this.get("plate");
+  });
+  Checkin.prototype.__defineSetter__("plate", function(aValue) {
+    return this.set("plate", aValue);
+  });
+
+  // time property
+  Checkin.prototype.__defineGetter__("time", function() {
+    return this.get("time");
+  });
+  Checkin.prototype.__defineSetter__("time", function(aValue) {
+    return this.set("time", aValue);
+  });
+
+  return Checkin;
+
 });

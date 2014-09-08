@@ -64,6 +64,15 @@ angular.module('Parking', [
         }
       }
     })
+    .state('app.checkin', {
+      url: '/checkin',
+      views: {
+        'menuContent' :{
+          templateUrl: 'templates/checkin.html',
+          controller: 'CheckinCtrl'
+        }
+      }
+    })
     .state('app.vehicles', {
       url: '/vehicles',
       views: {
