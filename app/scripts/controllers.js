@@ -147,6 +147,14 @@ angular.module('Parking.controllers', [])
 
   }else{
 
+    navigator.geolocation.getCurrentPosition(function(position){
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      $scope.checkin.geopoint = Parse.getGeopoint(latitude, longitude);
+     }, function(error){
+      console.log(error.message);
+     });
+
     Parse.getVehicles().then(function(vehicles){
       $scope.vehicles = vehicles;
       $scope.checkin.vehicle= vehicles[0];

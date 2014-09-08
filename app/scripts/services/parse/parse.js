@@ -95,6 +95,9 @@ angular.module('Parking.services')
       });
 
       return deferred.promise;
+    },
+    getGeopoint: function(latitude, longitude){
+      return new Parse.GeoPoint([latitude, longitude]);
     }
 
   };
