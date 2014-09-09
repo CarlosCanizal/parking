@@ -104,13 +104,33 @@ angular.module('Parking.controllers', [])
   });
 
 })
-.controller('CheckinCtrl', function($scope, Parse, CheckinParser) {
+.controller('CheckinCtrl', function($scope, $interval, Parse, CheckinParser) {
   
   Parse.getCheckins().then(function(checkins){
     $scope.checkins = checkins;
   },function(error){
     console.log(error);
   });
+
+
+// var seconds = 30;
+// $scope.countdown = seconds;
+// $interval(function(){
+//   var minutes = Math.round((seconds - 30)/60);
+//   var remainingSeconds = seconds % 60;
+//   if (remainingSeconds < 10) {
+//       remainingSeconds = "0" + remainingSeconds;
+//   }
+  
+//   $scope.countdown = minutes + ":" + remainingSeconds;
+//   if(seconds > 0){
+//     seconds--;
+//   }else{
+//     console.log("BUZZ BUZZ");
+//   }
+// }, 1000, seconds+1);
+
+
 
   $scope.deleteCheckin = function(checkin){
 
@@ -124,7 +144,7 @@ angular.module('Parking.controllers', [])
   };
 
 })
-.controller('ParkingCtrl', function($scope, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
+.controller('ParkingCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
 
   var checkinId = $stateParams.checkinId;
 
@@ -164,9 +184,6 @@ angular.module('Parking.controllers', [])
 
   }
 
-
-
-
   $scope.plus = function(){
     $scope.checkin.time += 15;
     $scope.payment = (($scope.checkin.time/60)*$scope.rate).toFixed(2);
@@ -184,9 +201,6 @@ angular.module('Parking.controllers', [])
     angular.element($event.currentTarget).addClass('selected');
   };
 
-  
-
-
   $ionicModal.fromTemplateUrl('templates/addVehicle.html', {
     scope: $scope
   }).then(function(modal) {
@@ -197,6 +211,7 @@ angular.module('Parking.controllers', [])
     $scope.checkin.vehicle = $scope.checkin.vehicle.toJSON();
     Parse.saveCheckin($scope.checkin).then(function(checkin){
       console.log(checkin);
+      $state.go('app.checkin');
     },function(error){
       console.log(error);
     });
