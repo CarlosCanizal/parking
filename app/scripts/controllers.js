@@ -59,12 +59,25 @@ angular.module('Parking.controllers', [])
     $scope.modalVehicle = modal;
   });
 
+  $scope.addImage = function(){
+    navigator.camera.getPicture(function(imageURI){
+      $scope.vehicle.image = imageURI;
+      $scope.$apply();
+    }, function(message){
+      console.log('Failed because: ' + message);
+    },  { quality: 50,
+          destinationType: Camera.DestinationType.FILE_URI,
+          allowEdit: true
+        });
+  };
+
   $scope.addVehicle = function(){
+
     Parse.saveVehicle($scope.vehicle).then(function(vehicle){
       $scope.vehicles.push(vehicle);
       $scope.closeVehicle();
     },function(error){
-      console.log(error);
+      alert(error.message);
     });
   };
 

@@ -6,6 +6,7 @@
     </div>
   </ion-header-bar>
   <ion-content>
+    {{vehicle}}
     <form name="vehicleForm" id="vehicleForm" ng-submit="addVehicle()" novalidate>
       <div class="list">
         <label class="item item-input">
@@ -16,10 +17,12 @@
           <span class="input-label">Plate</span>
           <input type="text" ng-model="vehicle.plate" required>
         </label>
+
         <label class="item">
           <button class="button button-block button-positive" type="submit">Add</button>
         </label>
       </div>
     </form>
+        <a class="button button-block button-positive" ng-click="addImage()">Add Image</a>
   </ion-content>
 </div>
