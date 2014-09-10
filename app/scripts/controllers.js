@@ -228,7 +228,17 @@ angular.module('Parking.controllers', [])
   };
 
 })
-.controller('SnapsCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
+.controller('SnapsCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, SnapParser) {
+
+
+  $scope.snap = {};
+  $scope.snaps = [];
+
+  Parse.getSnaps().then(function(snaps){
+    $scope.snaps = snaps;
+  },function(error){
+    console.log(error);
+  });
 
   $ionicModal.fromTemplateUrl('templates/addSnap.html', {
     scope: $scope
@@ -236,12 +246,45 @@ angular.module('Parking.controllers', [])
     $scope.modalSnap = modal;
   });
 
-  $scope.openSnap = function() {
+  $scope.openSnap = function(){
     $scope.modalSnap.show();
   };
 
-  $scope.closeSnap = function() {
+  $scope.closeSnap = function(){
     $scope.modalSnap.hide();
+  };
+
+
+  $scope.addSnap = function(){
+
+    Parse.addSnap($scope.snap).then(function(snap){
+      $scope.closeSnap();
+      $scope.snaps.push(snap);
+    },function(error){
+      console.log(error);
+    });
+  };
+
+  $scope.deleteSnap = function(snap){
+    Parse.deleteSnap(snap).then(function(){
+      var index = $scope.snaps.indexOf(snap);
+      $scope.snaps.splice(index,1);
+      $scope.$apply();
+    },function(error){
+      alert(error);
+    });
+  };
+
+  $scope.addImage = function(){
+    navigator.camera.getPicture(function(imageURI){
+      $scope.snap.image = imageURI;
+      $scope.$apply();
+    }, function(message){
+      console.log('Failed because: ' + message);
+    },  { quality: 50,
+          destinationType: Camera.DestinationType.FILE_URI,
+          allowEdit: true
+        });
   };
 
 

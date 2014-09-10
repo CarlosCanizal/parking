@@ -62,4 +62,32 @@ factory('CheckinParser', function() {
 
   return Checkin;
 
+}).
+factory('SnapParser', function() {
+
+  var Snap = Parse.Object.extend("Snap", {
+      // Instance methods
+    }, {
+      // Class methods
+    }
+  );
+
+  //plate property
+  Snap.prototype.__defineGetter__("plate", function() {
+    return this.get("plate");
+  });
+  Snap.prototype.__defineSetter__("plate", function(aValue) {
+    return this.set("plate", aValue);
+  });
+
+  // time property
+  Snap.prototype.__defineGetter__("image", function() {
+    return this.get("image");
+  });
+  Snap.prototype.__defineSetter__("image", function(aValue) {
+    return this.set("image", aValue);
+  });
+
+  return Snap;
+
 });
