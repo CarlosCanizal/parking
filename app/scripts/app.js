@@ -102,7 +102,7 @@ angular.module('Parking', [
       }
     })
     .state('app.snap', {
-      url: '/snap',
+      url: '/snaps/:snapId',
       views: {
         'menuContent' :{
           templateUrl: 'templates/snap.html',

@@ -119,7 +119,6 @@ angular.module('Parking.services')
       var file = new Parse.File("mycar.png", {base64:base64});
 
       file.save().then(function(file){
-        alert('success');
         deferred.resolve(file);
       },function(error){
         alert('error');
@@ -127,6 +126,47 @@ angular.module('Parking.services')
       });
 
       return deferred.promise;
+    },
+    getSnaps: function(){
+      var deferred = $q.defer();
+      var Snap = Parse.Object.extend('Snap');
+      var query = new Parse.Query(Snap);
+
+      query.find().then(function(snaps){
+        deferred.resolve(snaps);
+      },function(error){
+        deferred.reject(error);
+      });
+      return deferred.promise;
+    },
+    addSnap: function(snap_attributes){
+      var deferred =  $q.defer();
+      var Snap = Parse.Object.extend("Snap");
+      var snap = new Snap();
+      var object = this;
+      window.resolveLocalFileSystemURI(snap_attributes.image, function(fileEntry){
+        fileEntry.file( function(file) {
+          var reader = new FileReader();
+          reader.onloadend = function(evt) {
+            object.uploadFile(evt.target.result).then(function(file){
+              snap_attributes.image = file;
+              return snap.save(snap_attributes);
+            }).then(function(snap){
+              deferred.resolve(snap);
+            },function(error){
+              alert(error);
+            });
+          };
+          reader.readAsDataURL(file);
+        }, function(){
+          alert('failed');
+        });
+      });
+
+      return deferred.promise;
+    },
+    deleteSnap: function(snap){
+      return snap.destroy();
     }
 
   };
