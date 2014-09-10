@@ -125,26 +125,6 @@ angular.module('Parking.controllers', [])
     console.log(error);
   });
 
-
-// var seconds = 30;
-// $scope.countdown = seconds;
-// $interval(function(){
-//   var minutes = Math.round((seconds - 30)/60);
-//   var remainingSeconds = seconds % 60;
-//   if (remainingSeconds < 10) {
-//       remainingSeconds = "0" + remainingSeconds;
-//   }
-  
-//   $scope.countdown = minutes + ":" + remainingSeconds;
-//   if(seconds > 0){
-//     seconds--;
-//   }else{
-//     console.log("BUZZ BUZZ");
-//   }
-// }, 1000, seconds+1);
-
-
-
   $scope.deleteCheckin = function(checkin){
 
     Parse.deleteCheckin(checkin).then(function(){
@@ -246,5 +226,26 @@ angular.module('Parking.controllers', [])
   $scope.closeVehicle = function() {
     $scope.modalVehicle.hide();
   };
+
+})
+.controller('SnapsCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
+
+  $ionicModal.fromTemplateUrl('templates/addSnap.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modalSnap = modal;
+  });
+
+  $scope.openSnap = function() {
+    $scope.modalSnap.show();
+  };
+
+  $scope.closeSnap = function() {
+    $scope.modalSnap.hide();
+  };
+
+
+})
+.controller('SnapCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
 
 });

@@ -82,22 +82,31 @@ angular.module('Parking', [
         }
       }
     })
-    .state('app.snaps', {
-      url: '/snaps',
-      views: {
-        'menuContent' :{
-          templateUrl: 'templates/snaps.html',
-          controller: 'VehiclesCtrl'
-        }
-      }
-    })
-
     .state('app.vehicle', {
       url: '/vehicles/:vehicleId',
       views: {
         'menuContent' :{
           templateUrl: 'templates/vehicle.html',
           controller: 'VehicleCtrl'
+        }
+      }
+
+    })
+    .state('app.snaps', {
+      url: '/snaps',
+      views: {
+        'menuContent' :{
+          templateUrl: 'templates/snaps.html',
+          controller: 'SnapsCtrl'
+        }
+      }
+    })
+    .state('app.snap', {
+      url: '/snap',
+      views: {
+        'menuContent' :{
+          templateUrl: 'templates/snap.html',
+          controller: 'snapCtrl'
         }
       }
     });

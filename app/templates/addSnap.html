@@ -1,0 +1,27 @@
+<div class="modal">
+  <ion-header-bar>
+    <h1 class="title">New Snap</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeSnap()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form name="vehicleForm" id="vehicleForm" ng-submit="snap()" novalidate>
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Plate</span>
+          <input type="text" ng-model="snap.plate" required>
+        </label>
+
+        <div class='avatar' ng-click="addImage()">
+          <img  ng-src="{{snap.image}}" ng-if="snap.image">
+          <img  ng-src="images/car.jpg" ng-if="!snap.image">
+        </div>
+
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">Snap</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</div>
