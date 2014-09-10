@@ -5,7 +5,9 @@
   <ion-content class="has-header">
     <ion-list>
       <ion-item class="item item-avatar item-icon-right" ng-repeat="vehicle in vehicles" href="#/app/vehicles/{{vehicle.id}}">
-        <img ng-src="{{vehicle.image._url}}">
+        <img ng-src="{{vehicle.image._url}}" ng-if="vehicle.image._url">
+        <img ng-src="images/car.jpg" ng-if="!vehicle.image._url">
+
         <h2>{{vehicle.name}}</h2>
         <p>{{vehicle.plate}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>

@@ -17,13 +17,28 @@ angular.module('Parking.services')
       var deferred = $q.defer();
       var Vehicle = Parse.Object.extend("Vehicle");
       var vehicle = new Vehicle();
+      var object = this;
 
-      vehicle.save(vehicle_attr).then(function(vehicle){
-        deferred.resolve(vehicle);
-      },function(error){
-        deferred.reject(error);
+      window.resolveLocalFileSystemURI(vehicle_attr.image, function(fileEntry){
+        fileEntry.file( function(file) {
+          
+          var reader = new FileReader();
+          reader.onloadend = function(evt) {
+            
+            object.uploadFile(evt.target.result).then(function(file){
+              vehicle_attr.image = file;
+              return vehicle.save(vehicle_attr);
+            }).then(function(vehicle){
+              deferred.resolve(vehicle);
+            },function(error){
+              alert('error');
+            });
+          };
+          reader.readAsDataURL(file);
+        }, function(){
+          alert('failed');
+        });
       });
-
       return deferred.promise;
     },
     deleteVehicle: function(vehicle){
@@ -91,6 +106,23 @@ angular.module('Parking.services')
       query.get(checkinId).then(function(checkin){
         deferred.resolve(checkin);
       },function(error){
+        deferred.reject(error);
+      });
+
+      return deferred.promise;
+    },
+    getGeopoint: function(latitude, longitude){
+      return new Parse.GeoPoint([latitude, longitude]);
+    },
+    uploadFile: function(base64){
+      var deferred = $q.defer();
+      var file = new Parse.File("mycar.png", {base64:base64});
+
+      file.save().then(function(file){
+        alert('success');
+        deferred.resolve(file);
+      },function(error){
+        alert('error');
         deferred.reject(error);
       });
 

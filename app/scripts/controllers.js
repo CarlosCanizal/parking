@@ -59,12 +59,25 @@ angular.module('Parking.controllers', [])
     $scope.modalVehicle = modal;
   });
 
+  $scope.addImage = function(){
+    navigator.camera.getPicture(function(imageURI){
+      $scope.vehicle.image = imageURI;
+      $scope.$apply();
+    }, function(message){
+      console.log('Failed because: ' + message);
+    },  { quality: 50,
+          destinationType: Camera.DestinationType.FILE_URI,
+          allowEdit: true
+        });
+  };
+
   $scope.addVehicle = function(){
-    Parse.saveVehicle($scope.vehicle).then(function(vehicle){
+
+  Parse.saveVehicle($scope.vehicle).then(function(vehicle){
       $scope.vehicles.push(vehicle);
       $scope.closeVehicle();
     },function(error){
-      console.log(error);
+      alert(error.message);
     });
   };
 
@@ -104,13 +117,33 @@ angular.module('Parking.controllers', [])
   });
 
 })
-.controller('CheckinCtrl', function($scope, Parse, CheckinParser) {
+.controller('CheckinCtrl', function($scope, $interval, Parse, CheckinParser) {
   
   Parse.getCheckins().then(function(checkins){
     $scope.checkins = checkins;
   },function(error){
     console.log(error);
   });
+
+
+// var seconds = 30;
+// $scope.countdown = seconds;
+// $interval(function(){
+//   var minutes = Math.round((seconds - 30)/60);
+//   var remainingSeconds = seconds % 60;
+//   if (remainingSeconds < 10) {
+//       remainingSeconds = "0" + remainingSeconds;
+//   }
+  
+//   $scope.countdown = minutes + ":" + remainingSeconds;
+//   if(seconds > 0){
+//     seconds--;
+//   }else{
+//     console.log("BUZZ BUZZ");
+//   }
+// }, 1000, seconds+1);
+
+
 
   $scope.deleteCheckin = function(checkin){
 
@@ -124,7 +157,7 @@ angular.module('Parking.controllers', [])
   };
 
 })
-.controller('ParkingCtrl', function($scope, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
+.controller('ParkingCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
 
   var checkinId = $stateParams.checkinId;
 
@@ -147,6 +180,14 @@ angular.module('Parking.controllers', [])
 
   }else{
 
+    navigator.geolocation.getCurrentPosition(function(position){
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      $scope.checkin.geopoint = Parse.getGeopoint(latitude, longitude);
+     }, function(error){
+      console.log(error.message);
+     });
+
     Parse.getVehicles().then(function(vehicles){
       $scope.vehicles = vehicles;
       $scope.checkin.vehicle= vehicles[0];
@@ -155,9 +196,6 @@ angular.module('Parking.controllers', [])
     });
 
   }
-
-
-
 
   $scope.plus = function(){
     $scope.checkin.time += 15;
@@ -176,9 +214,6 @@ angular.module('Parking.controllers', [])
     angular.element($event.currentTarget).addClass('selected');
   };
 
-  
-
-
   $ionicModal.fromTemplateUrl('templates/addVehicle.html', {
     scope: $scope
   }).then(function(modal) {
@@ -189,6 +224,7 @@ angular.module('Parking.controllers', [])
     $scope.checkin.vehicle = $scope.checkin.vehicle.toJSON();
     Parse.saveCheckin($scope.checkin).then(function(checkin){
       console.log(checkin);
+      $state.go('app.checkin');
     },function(error){
       console.log(error);
     });
