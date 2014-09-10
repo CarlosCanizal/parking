@@ -167,8 +167,16 @@ angular.module('Parking.services')
     },
     deleteSnap: function(snap){
       return snap.destroy();
+    },
+    login: function(username, password){
+      var deferred = $q.defer();
+      Parse.User.logIn(username, password).then(function(user){
+        deferred.resolve(user);
+      },function(error){
+        deferred.reject(error);
+      });
+      return deferred.promise;
     }
-
   };
   
 }]);

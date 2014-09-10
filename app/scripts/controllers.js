@@ -1,14 +1,12 @@
 'use strict';
 angular.module('Parking.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Parse) {
+.controller('AppCtrl', function($scope, $state, $ionicModal, Parse) {
 
   //Initialize Parse
   Parse.initialize();
 
-  //jccz revisar si es un bung loginDati
-  // Form data for the login modal
-  $scope.loginData = {};
+  $scope.user = {};
 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -16,7 +14,6 @@ angular.module('Parking.controllers', [])
   }).then(function(modal) {
     $scope.modal = modal;
   });
-
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
@@ -28,24 +25,18 @@ angular.module('Parking.controllers', [])
     $scope.modal.show();
   };
 
-  $scope.openVehicle = function() {
-    $scope.modalVehicle.show();
-  };
-
-  $scope.closeVehicle = function() {
-    $scope.modalVehicle.hide();
-  };
-  
-
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
+    var username = $scope.user.username;
+    var password = $scope.user.password;
+    
+    Parse.login(username, password).then(function(){
+      console.log('login');
+      $state.go('app.checkin');
       $scope.closeLogin();
-    }, 1000);
+    },function(error){
+      console.log(error);
+    });
   };
 })
 .controller('VehiclesCtrl', function($scope,$ionicModal, Parse, VehicleParser) {
@@ -139,7 +130,7 @@ angular.module('Parking.controllers', [])
 })
 .controller('AccountCtrl',function($scope, $state){
   $scope.user = {};
-  
+
   $scope.updateAccount = function(){
     console.log($scope.user);
   };
@@ -212,7 +203,6 @@ angular.module('Parking.controllers', [])
     $scope.checkin.vehicle = $scope.checkin.vehicle.toJSON();
     Parse.saveCheckin($scope.checkin).then(function(checkin){
       console.log(checkin);
-      $state.go('app.checkin');
     },function(error){
       console.log(error);
     });
