@@ -42,7 +42,8 @@ angular.module('Parking', [
       url: '/account',
       views: {
         'menuContent' :{
-          templateUrl: 'templates/account.html'
+          templateUrl: 'templates/account.html',
+          controller: 'AccountCtrl'
         }
       }
     })
