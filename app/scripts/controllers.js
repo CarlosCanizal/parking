@@ -137,6 +137,14 @@ angular.module('Parking.controllers', [])
   };
 
 })
+.controller('AccountCtrl',function($scope, $state){
+  $scope.user = {};
+  
+  $scope.updateAccount = function(){
+    console.log($scope.user);
+  };
+
+})
 .controller('ParkingCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
 
   var checkinId = $stateParams.checkinId;
