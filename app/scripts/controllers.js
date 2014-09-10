@@ -73,7 +73,7 @@ angular.module('Parking.controllers', [])
 
   $scope.addVehicle = function(){
 
-    Parse.saveVehicle($scope.vehicle).then(function(vehicle){
+  Parse.saveVehicle($scope.vehicle).then(function(vehicle){
       $scope.vehicles.push(vehicle);
       $scope.closeVehicle();
     },function(error){

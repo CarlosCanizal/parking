@@ -45,6 +45,18 @@
 }
 
 
+.avatar{
+  width: 150px;
+  height: 150px;
+  outline: solid 1px #000;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.avatar img{
+  width: 100%;
+}
+
 /*jccanizal styles*/
 
 
