@@ -1,7 +1,7 @@
 'use strict';
 angular.module('Parking.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Parse) {
+.controller('AppCtrl', function($scope, $state, $ionicModal, Parse) {
 
   //Initialize Parse
   Parse.initialize();
@@ -29,9 +29,11 @@ angular.module('Parking.controllers', [])
   $scope.doLogin = function() {
     var username = $scope.user.username;
     var password = $scope.user.password;
-
+    
     Parse.login(username, password).then(function(){
       console.log('login');
+      $state.go('app.checkin');
+      $scope.closeLogin();
     },function(error){
       console.log(error);
     });
@@ -201,7 +203,6 @@ angular.module('Parking.controllers', [])
     $scope.checkin.vehicle = $scope.checkin.vehicle.toJSON();
     Parse.saveCheckin($scope.checkin).then(function(checkin){
       console.log(checkin);
-      $state.go('app.checkin');
     },function(error){
       console.log(error);
     });
