@@ -46,8 +46,10 @@ angular.module('Parking.services')
     },
     getVehicle: function(vehicleId){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Vehicle = Parse.Object.extend('Vehicle');
       var query = new Parse.Query(Vehicle);
+      query.equalTo('user',user);
 
       query.get(vehicleId).then(function(vehicle){
         deferred.resolve(vehicle);
@@ -58,10 +60,13 @@ angular.module('Parking.services')
     },
     getVehicles: function(){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Vehicle = Parse.Object.extend('Vehicle');
       var query = new Parse.Query(Vehicle);
+      query.equalTo('user',user);
 
       query.find().then(function(vehicles){
+        console.log(vehicles);
         deferred.resolve(vehicles);
       },function(error){
         deferred.reject(error);
