@@ -15,9 +15,11 @@ angular.module('Parking.services')
     },
     saveVehicle : function(vehicle_attr){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Vehicle = Parse.Object.extend("Vehicle");
       var vehicle = new Vehicle();
       var object = this;
+      vehicle_attr.user = user;
 
       window.resolveLocalFileSystemURI(vehicle_attr.image, function(fileEntry){
         fileEntry.file( function(file) {
@@ -46,8 +48,10 @@ angular.module('Parking.services')
     },
     getVehicle: function(vehicleId){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Vehicle = Parse.Object.extend('Vehicle');
       var query = new Parse.Query(Vehicle);
+      query.equalTo('user',user);
 
       query.get(vehicleId).then(function(vehicle){
         deferred.resolve(vehicle);
@@ -58,10 +62,13 @@ angular.module('Parking.services')
     },
     getVehicles: function(){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Vehicle = Parse.Object.extend('Vehicle');
       var query = new Parse.Query(Vehicle);
+      query.equalTo('user',user);
 
       query.find().then(function(vehicles){
+        console.log(vehicles);
         deferred.resolve(vehicles);
       },function(error){
         deferred.reject(error);
@@ -175,6 +182,16 @@ angular.module('Parking.services')
       },function(error){
         deferred.reject(error);
       });
+      return deferred.promise;
+    },
+    updateAccount: function(user){
+      var deferred = $q.defer();
+      user.save().then(function(user){
+        deferred.resolve(user);
+      },function(error){
+        deferred.reject(error);
+      });
+
       return deferred.promise;
     }
   };

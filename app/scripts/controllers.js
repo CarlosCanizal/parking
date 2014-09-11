@@ -29,7 +29,6 @@ angular.module('Parking.controllers', [])
   $scope.doLogin = function() {
     var username = $scope.user.username;
     var password = $scope.user.password;
-    
     Parse.login(username, password).then(function(){
       console.log('login');
       $state.go('app.checkin');
@@ -128,11 +127,17 @@ angular.module('Parking.controllers', [])
   };
 
 })
-.controller('AccountCtrl',function($scope, $state){
-  $scope.user = {};
+.controller('AccountCtrl',function($scope, $state, Parse, UserParser){
+  
+  $scope.user = Parse.currentUser();
+  console.log($scope.user);
 
   $scope.updateAccount = function(){
-    console.log($scope.user);
+    Parse.updateAccount($scope.user).then(function(user){
+      console.log(user);
+    },function(error){
+      console.log(error);
+    });
   };
 
 })
