@@ -90,4 +90,40 @@ factory('SnapParser', function() {
 
   return Snap;
 
+}).
+factory('UserParser', function() {
+
+  var User = Parse.Object.extend("User", {
+      // Instance methods
+    }, {
+      // Class methods
+    }
+  );
+
+  //name property
+  User.prototype.__defineGetter__("firstname", function() {
+    return this.get("firstname");
+  });
+  User.prototype.__defineSetter__("firstname", function(aValue) {
+    return this.set("firstname", aValue);
+  });
+
+  //lastname property
+  User.prototype.__defineGetter__("lastname", function() {
+    return this.get("lastname");
+  });
+  User.prototype.__defineSetter__("lastname", function(aValue) {
+    return this.set("lastname", aValue);
+  });
+
+  //email property
+  User.prototype.__defineGetter__("email", function() {
+    return this.get("email");
+  });
+  User.prototype.__defineSetter__("email", function(aValue) {
+    return this.set("email", aValue);
+  });
+
+  return User;
+
 });

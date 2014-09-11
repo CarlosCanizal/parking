@@ -176,6 +176,16 @@ angular.module('Parking.services')
         deferred.reject(error);
       });
       return deferred.promise;
+    },
+    updateAccount: function(user){
+      var deferred = $q.defer();
+      user.save().then(function(user){
+        deferred.resolve(user);
+      },function(error){
+        deferred.reject(error);
+      });
+
+      return deferred.promise;
     }
   };
   
