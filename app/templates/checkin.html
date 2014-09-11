@@ -5,6 +5,9 @@
   <ion-content class="has-header">
     <ion-list>
       <ion-item class="item item-avatar item-icon-right" ng-repeat="checkin in checkins" ui-sref="app.parking({checkinId:checkin.id})" >
+        <img ng-src="{{checkin.vehicle.image._url}}" ng-if="checkin.vehicle.image._url">
+        <img ng-src="images/car.jpg" ng-if="!checkin.vehicle.image._url">
+
         <h2>{{checkin.vehicle.plate}}</h2>
         <p>{{countdown}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
