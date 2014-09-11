@@ -32,6 +32,14 @@ factory('VehicleParser', function() {
     return this.set("image", aValue);
   });
 
+  // user property
+  Vehicle.prototype.__defineGetter__("user", function() {
+    return this.get("user");
+  });
+  Vehicle.prototype.__defineSetter__("user", function(aValue) {
+    return this.set("user", aValue);
+  });
+
   return Vehicle;
 
 }).
@@ -60,6 +68,14 @@ factory('CheckinParser', function() {
     return this.set("time", aValue);
   });
 
+  // user property
+  Checkin.prototype.__defineGetter__("user", function() {
+    return this.get("user");
+  });
+  Checkin.prototype.__defineSetter__("user", function(aValue) {
+    return this.set("user", aValue);
+  });
+
   return Checkin;
 
 }).
@@ -80,12 +96,20 @@ factory('SnapParser', function() {
     return this.set("plate", aValue);
   });
 
-  // time property
+  // image property
   Snap.prototype.__defineGetter__("image", function() {
     return this.get("image");
   });
   Snap.prototype.__defineSetter__("image", function(aValue) {
     return this.set("image", aValue);
+  });
+
+  // user property
+  Snap.prototype.__defineGetter__("user", function() {
+    return this.get("user");
+  });
+  Snap.prototype.__defineSetter__("user", function(aValue) {
+    return this.set("user", aValue);
   });
 
   return Snap;

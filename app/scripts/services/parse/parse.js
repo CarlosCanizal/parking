@@ -78,8 +78,10 @@ angular.module('Parking.services')
     },
     saveCheckin: function(newCheckin){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Checkin = Parse.Object.extend('Checkin');
       var checkin = new Checkin();
+      newCheckin.user = user;
 
       checkin.save(newCheckin).then(function(checkin){
         deferred.resolve(checkin);
@@ -91,8 +93,10 @@ angular.module('Parking.services')
     },
     getCheckins : function(){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Checkin = Parse.Object.extend('Checkin');
       var query = new Parse.Query(Checkin);
+      query.equalTo('user',user);
 
       query.find().then(function(checkins){
         deferred.resolve(checkins);
@@ -136,9 +140,10 @@ angular.module('Parking.services')
     },
     getSnaps: function(){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Snap = Parse.Object.extend('Snap');
       var query = new Parse.Query(Snap);
-
+      query.equalTo('user', user);
       query.find().then(function(snaps){
         deferred.resolve(snaps);
       },function(error){
@@ -148,8 +153,10 @@ angular.module('Parking.services')
     },
     addSnap: function(snap_attributes){
       var deferred =  $q.defer();
+      var user = Parse.User.current();
       var Snap = Parse.Object.extend("Snap");
       var snap = new Snap();
+      snap_attributes.user = user;
       var object = this;
       window.resolveLocalFileSystemURI(snap_attributes.image, function(fileEntry){
         fileEntry.file( function(file) {
