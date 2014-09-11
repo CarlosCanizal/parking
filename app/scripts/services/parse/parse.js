@@ -15,9 +15,11 @@ angular.module('Parking.services')
     },
     saveVehicle : function(vehicle_attr){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Vehicle = Parse.Object.extend("Vehicle");
       var vehicle = new Vehicle();
       var object = this;
+      vehicle_attr.user = user;
 
       window.resolveLocalFileSystemURI(vehicle_attr.image, function(fileEntry){
         fileEntry.file( function(file) {
