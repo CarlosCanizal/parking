@@ -78,8 +78,10 @@ angular.module('Parking.services')
     },
     saveCheckin: function(newCheckin){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Checkin = Parse.Object.extend('Checkin');
       var checkin = new Checkin();
+      newCheckin.user = user;
 
       checkin.save(newCheckin).then(function(checkin){
         deferred.resolve(checkin);
@@ -91,8 +93,10 @@ angular.module('Parking.services')
     },
     getCheckins : function(){
       var deferred = $q.defer();
+      var user = Parse.User.current();
       var Checkin = Parse.Object.extend('Checkin');
       var query = new Parse.Query(Checkin);
+      query.equalTo('user',user);
 
       query.find().then(function(checkins){
         deferred.resolve(checkins);
