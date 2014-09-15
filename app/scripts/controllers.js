@@ -3,8 +3,14 @@ angular.module('Parking.controllers', [])
 
 .controller('AppCtrl', function($scope, $state, $ionicModal, Parse) {
 
+  if(!Parse.currentUser()){
+    $state.go('anon');
+    return;
+  }
+
   $scope.signOut = function(){
     Parse.signOut();
+    $state.go('anon');
   };
 
 })
@@ -77,7 +83,7 @@ angular.module('Parking.controllers', [])
   });
 
 })
-.controller('CheckinCtrl', function($scope, $interval, Parse, CheckinParser) {
+.controller('CheckinCtrl', function($scope, $state, $interval, Parse, CheckinParser) {
   
   Parse.getCheckins().then(function(checkins){
     $scope.checkins = checkins;
