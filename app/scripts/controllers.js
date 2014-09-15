@@ -112,7 +112,7 @@ angular.module('Parking.controllers', [])
 .controller('AccountCtrl',function($scope, $state, Parse, UserParser){
   
   $scope.user = Parse.currentUser();
-  console.log($scope.user);
+  console.log($scope.user.get('firstname'));
 
   $scope.updateAccount = function(){
     Parse.updateAccount($scope.user).then(function(user){
