@@ -3,40 +3,16 @@ angular.module('Parking.controllers', [])
 
 .controller('AppCtrl', function($scope, $state, $ionicModal, Parse) {
 
-  //Initialize Parse
-  Parse.initialize();
+  if(!Parse.currentUser()){
+    $state.go('anon');
+    return;
+  }
 
-  $scope.user = {};
-
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  },
-
-  // Open the login modal
-  $scope.openLogin = function() {
-    $scope.modal.show();
+  $scope.signOut = function(){
+    Parse.signOut();
+    $state.go('anon');
   };
 
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    var username = $scope.user.username;
-    var password = $scope.user.password;
-    Parse.login(username, password).then(function(){
-      console.log('login');
-      $state.go('app.checkin');
-      $scope.closeLogin();
-    },function(error){
-      console.log(error);
-    });
-  };
 })
 .controller('VehiclesCtrl', function($scope,$ionicModal, Parse, VehicleParser) {
 
@@ -107,7 +83,9 @@ angular.module('Parking.controllers', [])
   });
 
 })
-.controller('CheckinCtrl', function($scope, $interval, Parse, CheckinParser) {
+.controller('CheckinCtrl', function($scope, $state, $interval, Parse, CheckinParser) {
+
+  $scope.hideBackButton = false;
   
   Parse.getCheckins().then(function(checkins){
     $scope.checkins = checkins;
@@ -125,6 +103,10 @@ angular.module('Parking.controllers', [])
       console.log(error.message);
     });
   };
+
+  $scope.$on('$stateChangeSuccess', function (ev, from, fromParams, to, toParams) {
+    $scope.hideBackButton=true;
+  });
 
 })
 .controller('AccountCtrl',function($scope, $state, Parse, UserParser){
@@ -293,5 +275,45 @@ angular.module('Parking.controllers', [])
 
 })
 .controller('SnapCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
+
+})
+.controller('AnonCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
+
+  if(Parse.currentUser()){
+    $state.go('app.checkin');
+    return;
+  }
+
+   // Create the login modal that we will use later
+  $ionicModal.fromTemplateUrl('templates/login.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.user = {};
+
+  // Perform the login action when the user submits the login form
+  $scope.doLogin = function() {
+    var username = $scope.user.username;
+    var password = $scope.user.password;
+    Parse.login(username, password).then(function(){
+      console.log('login');
+      $state.go('app.checkin');
+      $scope.closeLogin();
+    },function(error){
+      console.log(error);
+    });
+  };
+
+  // Triggered in the login modal to close it
+  $scope.closeLogin = function() {
+    $scope.modal.hide();
+  },
+
+  // Open the login modal
+  $scope.openLogin = function() {
+    $scope.modal.show();
+  };
 
 });

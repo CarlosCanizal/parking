@@ -14,7 +14,11 @@ angular.module('Parking', [
   'Parking.directives'
 ])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, Parse) {
+
+  //Initialize Parse
+  Parse.initialize();
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -30,14 +34,17 @@ angular.module('Parking', [
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-
+    .state('anon', {
+      url: '/anon',
+      templateUrl: 'templates/anon.html',
+      controller: 'AnonCtrl'
+    })
     .state('app', {
       url: '/app',
       abstract: true,
       templateUrl: 'templates/menu.html',
       controller: 'AppCtrl'
     })
-
     .state('app.account', {
       url: '/account',
       views: {
@@ -112,7 +119,7 @@ angular.module('Parking', [
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/vehicles');
+  $urlRouterProvider.otherwise('/anon');
 });
 
 angular.module('Parking.services',[]);

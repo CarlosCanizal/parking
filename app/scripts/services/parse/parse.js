@@ -200,6 +200,9 @@ angular.module('Parking.services')
       });
 
       return deferred.promise;
+    },
+    signOut: function(){
+      return Parse.User.logOut();
     }
   };
   
