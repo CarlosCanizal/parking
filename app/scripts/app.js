@@ -30,14 +30,17 @@ angular.module('Parking', [
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-
+    .state('anon', {
+      url: '/anon',
+      templateUrl: 'templates/anon.html',
+      controller: 'AnonCtrl'
+    })
     .state('app', {
       url: '/app',
       abstract: true,
       templateUrl: 'templates/menu.html',
       controller: 'AppCtrl'
     })
-
     .state('app.account', {
       url: '/account',
       views: {

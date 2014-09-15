@@ -294,4 +294,7 @@ angular.module('Parking.controllers', [])
 })
 .controller('SnapCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
 
+})
+.controller('AnonCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
+
 });
