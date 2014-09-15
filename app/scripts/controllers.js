@@ -84,6 +84,8 @@ angular.module('Parking.controllers', [])
 
 })
 .controller('CheckinCtrl', function($scope, $state, $interval, Parse, CheckinParser) {
+
+  $scope.hideBackButton = false;
   
   Parse.getCheckins().then(function(checkins){
     $scope.checkins = checkins;
@@ -101,6 +103,10 @@ angular.module('Parking.controllers', [])
       console.log(error.message);
     });
   };
+
+  $scope.$on('$stateChangeSuccess', function (ev, from, fromParams, to, toParams) {
+    $scope.hideBackButton=true;
+  });
 
 })
 .controller('AccountCtrl',function($scope, $state, Parse, UserParser){
