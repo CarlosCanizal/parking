@@ -3,6 +3,10 @@ angular.module('Parking.controllers', [])
 
 .controller('AppCtrl', function($scope, $state, $ionicModal, Parse) {
 
+  $scope.signOut = function(){
+    Parse.signOut();
+  };
+
 })
 .controller('VehiclesCtrl', function($scope,$ionicModal, Parse, VehicleParser) {
 
@@ -262,6 +266,12 @@ angular.module('Parking.controllers', [])
 
 })
 .controller('AnonCtrl', function($scope, $state, $stateParams, $ionicModal, Parse, VehicleParser,CheckinParser) {
+
+  if(Parse.currentUser()){
+    $state.go('app.checkin');
+    return;
+  }
+
    // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
