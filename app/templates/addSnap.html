@@ -6,12 +6,18 @@
     </div>
   </ion-header-bar>
   <ion-content>
-    <form name="vehicleForm" id="vehicleForm" ng-submit="addSnap()" novalidate>
+    <form name="snapForm" ng-submit="addSnap(snapForm.$valid)" novalidate>
       <div class="list">
         <label class="item item-input">
           <span class="input-label">Plate</span>
-          <input type="text" ng-model="snap.plate" required>
+          <input name="plate" type="text" ng-model="snap.plate" required>
         </label>
+        <div class="error" ng-if="error">
+          <span>{{error.message}}</span>
+        </div>
+        <div class="error" ng-if="snapForm.$invalid">
+          <p ng-show="snapForm.plate.$invalid && !snapForm.plate.$pristine">Plate is required.</p>
+        </div>
 
         <div class='avatar' ng-click="addImage()">
           <img  ng-src="{{snap.image}}" ng-if="snap.image">

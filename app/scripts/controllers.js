@@ -226,6 +226,7 @@ angular.module('Parking.controllers', [])
 
   $scope.snap = {};
   $scope.snaps = [];
+  $scope.error = false;
 
   Parse.getSnaps().then(function(snaps){
     $scope.snaps = snaps;
@@ -248,14 +249,16 @@ angular.module('Parking.controllers', [])
   };
 
 
-  $scope.addSnap = function(){
-
-    Parse.addSnap($scope.snap).then(function(snap){
-      $scope.closeSnap();
-      $scope.snaps.push(snap);
-    },function(error){
-      console.log(error);
-    });
+  $scope.addSnap = function(isValid){
+    if(isValid){
+      Parse.addSnap($scope.snap).then(function(snap){
+        $scope.closeSnap();
+        $scope.snaps.push(snap);
+      },function(error){
+        console.log(error);
+        $scope.error =  error;
+      });
+    }
   };
 
   $scope.deleteSnap = function(snap){
