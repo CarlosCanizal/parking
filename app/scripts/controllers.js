@@ -86,6 +86,7 @@ angular.module('Parking.controllers', [])
 .controller('CheckinCtrl', function($scope, $state, $interval, Parse, CheckinParser) {
 
   $scope.hideBackButton = false;
+  $scope.error = null;
   
   Parse.getCheckins().then(function(checkins){
     $scope.checkins = checkins;
@@ -112,14 +113,17 @@ angular.module('Parking.controllers', [])
 .controller('AccountCtrl',function($scope, $state, Parse, UserParser){
   
   $scope.user = Parse.currentUser();
-  console.log($scope.user);
+  console.log($scope.user.get('firstname'));
 
-  $scope.updateAccount = function(){
-    Parse.updateAccount($scope.user).then(function(user){
-      console.log(user);
-    },function(error){
-      console.log(error);
-    });
+  $scope.updateAccount = function(isValid){
+    if(isValid){
+      Parse.updateAccount($scope.user).then(function(user){
+        console.log(user);
+      },function(error){
+        console.log(error);
+        $scope.error = error;
+      });
+    }
   };
 
 })
@@ -134,6 +138,7 @@ angular.module('Parking.controllers', [])
   $scope.vehicle = {};
   $scope.vehicles = [];
   $scope.isNew = true;
+  $scope.error = null;
 
   if(checkinId !== 'new'){
     $scope.isNew = false;
@@ -195,13 +200,16 @@ angular.module('Parking.controllers', [])
     });
   };
 
-  $scope.addVehicle = function(){
-    Parse.saveVehicle($scope.vehicle).then(function(vehicle){
-      $scope.vehicles.push(vehicle);
-      $scope.closeVehicle();
-    },function(error){
-      console.log(error);
-    });
+  $scope.addVehicle = function(isValid){
+    if(isValid){
+      Parse.saveVehicle($scope.vehicle).then(function(vehicle){
+        $scope.vehicles.push(vehicle);
+        $scope.closeVehicle();
+      },function(error){
+        console.log(error);
+        $scope.error = error;
+      });
+    }
   };
 
   $scope.openVehicle = function() {
@@ -218,6 +226,7 @@ angular.module('Parking.controllers', [])
 
   $scope.snap = {};
   $scope.snaps = [];
+  $scope.error = false;
 
   Parse.getSnaps().then(function(snaps){
     $scope.snaps = snaps;
@@ -240,14 +249,16 @@ angular.module('Parking.controllers', [])
   };
 
 
-  $scope.addSnap = function(){
-
-    Parse.addSnap($scope.snap).then(function(snap){
-      $scope.closeSnap();
-      $scope.snaps.push(snap);
-    },function(error){
-      console.log(error);
-    });
+  $scope.addSnap = function(isValid){
+    if(isValid){
+      Parse.addSnap($scope.snap).then(function(snap){
+        $scope.closeSnap();
+        $scope.snaps.push(snap);
+      },function(error){
+        console.log(error);
+        $scope.error =  error;
+      });
+    }
   };
 
   $scope.deleteSnap = function(snap){
@@ -291,29 +302,63 @@ angular.module('Parking.controllers', [])
     $scope.modal = modal;
   });
 
+  $ionicModal.fromTemplateUrl('templates/register.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modalRegister = modal;
+  });
+
   $scope.user = {};
+  $scope.error = null;
 
   // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    var username = $scope.user.username;
-    var password = $scope.user.password;
-    Parse.login(username, password).then(function(){
-      console.log('login');
-      $state.go('app.checkin');
-      $scope.closeLogin();
-    },function(error){
-      console.log(error);
-    });
+  $scope.doLogin = function(isValid) {
+    if(isValid){
+      var username = $scope.user.username;
+      var password = $scope.user.password;
+      Parse.login(username, password).then(function(){
+        console.log('login');
+        $state.go('app.checkin');
+        $scope.closeLogin();
+      },function(error){
+        console.log(error);
+        $scope.error = error;
+      });
+    }
+  };
+
+  $scope.doRegister = function(isValid){
+
+    if(isValid){
+      Parse.signUp($scope.user.username,$scope.user.password).then(function(user){
+        console.log(user);
+        $state.go('app.checkin');
+        $scope.closeRegister();
+      },function(error){
+        console.log(error.message);
+        $scope.error = error;
+      });
+    }
+  };
+
+  // Open the login modal
+  $scope.openRegister = function() {
+    $scope.modalRegister.show();
   };
 
   // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
+  $scope.closeRegister = function() {
+    $scope.modalRegister.hide();
   },
 
   // Open the login modal
   $scope.openLogin = function() {
     $scope.modal.show();
+  };
+
+  // Triggered in the login modal to close it
+  $scope.closeLogin = function() {
+    $scope.modal.hide();
   };
 
 });

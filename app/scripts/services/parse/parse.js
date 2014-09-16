@@ -203,6 +203,18 @@ angular.module('Parking.services')
     },
     signOut: function(){
       return Parse.User.logOut();
+    },
+    signUp: function(username, password){
+      var user = new Parse.User();
+      var deferred = $q.defer();
+      user.set('username', username);
+      user.set('password', password);
+      user.signUp().then(function(user){
+        deferred.resolve(user);
+      },function(error){
+        deferred.reject(error);
+      });
+      return deferred.promise;
     }
   };
   

@@ -117,12 +117,7 @@ factory('SnapParser', function() {
 }).
 factory('UserParser', function() {
 
-  var User = Parse.Object.extend("User", {
-      // Instance methods
-    }, {
-      // Class methods
-    }
-  );
+  var User = Parse.User;
 
   //name property
   User.prototype.__defineGetter__("firstname", function() {
@@ -151,3 +146,4 @@ factory('UserParser', function() {
   return User;
 
 });
+
