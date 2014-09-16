@@ -138,6 +138,7 @@ angular.module('Parking.controllers', [])
   $scope.vehicle = {};
   $scope.vehicles = [];
   $scope.isNew = true;
+  $scope.error = null;
 
   if(checkinId !== 'new'){
     $scope.isNew = false;
@@ -199,13 +200,16 @@ angular.module('Parking.controllers', [])
     });
   };
 
-  $scope.addVehicle = function(){
-    Parse.saveVehicle($scope.vehicle).then(function(vehicle){
-      $scope.vehicles.push(vehicle);
-      $scope.closeVehicle();
-    },function(error){
-      console.log(error);
-    });
+  $scope.addVehicle = function(isValid){
+    if(isValid){
+      Parse.saveVehicle($scope.vehicle).then(function(vehicle){
+        $scope.vehicles.push(vehicle);
+        $scope.closeVehicle();
+      },function(error){
+        console.log(error);
+        $scope.error = error;
+      });
+    }
   };
 
   $scope.openVehicle = function() {
