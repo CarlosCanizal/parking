@@ -86,6 +86,7 @@ angular.module('Parking.controllers', [])
 .controller('CheckinCtrl', function($scope, $state, $interval, Parse, CheckinParser) {
 
   $scope.hideBackButton = false;
+  $scope.error = null;
   
   Parse.getCheckins().then(function(checkins){
     $scope.checkins = checkins;
@@ -114,12 +115,15 @@ angular.module('Parking.controllers', [])
   $scope.user = Parse.currentUser();
   console.log($scope.user.get('firstname'));
 
-  $scope.updateAccount = function(){
-    Parse.updateAccount($scope.user).then(function(user){
-      console.log(user);
-    },function(error){
-      console.log(error);
-    });
+  $scope.updateAccount = function(isValid){
+    if(isValid){
+      Parse.updateAccount($scope.user).then(function(user){
+        console.log(user);
+      },function(error){
+        console.log(error);
+        $scope.error = error;
+      });
+    }
   };
 
 })
