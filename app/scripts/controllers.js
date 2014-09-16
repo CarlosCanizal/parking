@@ -301,28 +301,33 @@ angular.module('Parking.controllers', [])
   $scope.error = null;
 
   // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    var username = $scope.user.username;
-    var password = $scope.user.password;
-    Parse.login(username, password).then(function(){
-      console.log('login');
-      $state.go('app.checkin');
-      $scope.closeLogin();
-    },function(error){
-      console.log(error);
-      $scope.error = error;
-    });
+  $scope.doLogin = function(isValid) {
+    if(isValid){
+      var username = $scope.user.username;
+      var password = $scope.user.password;
+      Parse.login(username, password).then(function(){
+        console.log('login');
+        $state.go('app.checkin');
+        $scope.closeLogin();
+      },function(error){
+        console.log(error);
+        $scope.error = error;
+      });
+    }
   };
 
-  $scope.doRegister = function(){
-    Parse.signUp($scope.user.username,$scope.user.password).then(function(user){
-      console.log(user);
-      $state.go('app.checkin');
-      $scope.closeRegister();
-    },function(error){
-      console.log(error.message);
-      $scope.error = error;
-    });
+  $scope.doRegister = function(isValid){
+
+    if(isValid){
+      Parse.signUp($scope.user.username,$scope.user.password).then(function(user){
+        console.log(user);
+        $state.go('app.checkin');
+        $scope.closeRegister();
+      },function(error){
+        console.log(error.message);
+        $scope.error = error;
+      });
+    }
   };
 
   // Open the login modal
