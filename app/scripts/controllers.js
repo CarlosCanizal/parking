@@ -291,7 +291,14 @@ angular.module('Parking.controllers', [])
     $scope.modal = modal;
   });
 
+  $ionicModal.fromTemplateUrl('templates/register.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modalRegister = modal;
+  });
+
   $scope.user = {};
+  $scope.error = null;
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
@@ -303,17 +310,39 @@ angular.module('Parking.controllers', [])
       $scope.closeLogin();
     },function(error){
       console.log(error);
+      $scope.error = error;
     });
   };
 
+  $scope.doRegister = function(){
+    Parse.signUp($scope.user.username,$scope.user.password).then(function(user){
+      console.log(user);
+      $state.go('app.checkin');
+      $scope.closeRegister();
+    },function(error){
+      console.log(error.message);
+      $scope.error = error;
+    });
+  };
+
+  // Open the login modal
+  $scope.openRegister = function() {
+    $scope.modalRegister.show();
+  };
+
   // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
+  $scope.closeRegister = function() {
+    $scope.modalRegister.hide();
   },
 
   // Open the login modal
   $scope.openLogin = function() {
     $scope.modal.show();
+  };
+
+  // Triggered in the login modal to close it
+  $scope.closeLogin = function() {
+    $scope.modal.hide();
   };
 
 });

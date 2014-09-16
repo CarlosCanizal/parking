@@ -127,6 +127,12 @@ ion-nav-view, ion-slide, ion-slide-box, .slider, .box{
   border-color:#ccc;
 }
 
+.error{
+  padding: 1rem;
+  text-align: center;
+  color:#cc2311;
+}
+
 
 
 @font-face {
